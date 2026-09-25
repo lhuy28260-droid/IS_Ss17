@@ -1,0 +1,421 @@
+<mxfile host="app.diagrams.net" pages="3">
+  <diagram name="Trang-1" id="xA2dv_K08qs7JKkIx3Xg">
+    <mxGraphModel dx="2357" dy="1372" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;sequenceDiagram\n    autonumber\n    actor Client as Khách hàng / Client\n    participant PG as Payment Gateway (Cổng thanh toán)\n    participant BS as Billing Service (RikkeiLogistics)\n    participant DB as PaymentTransaction DB\n    participant OS as Order Service (Hệ thống Vận đơn)\n    participant Audit as AuditLog DB\n\n    Client-&gt;&gt;PG: 1. Thực hiện thanh toán cước / COD\n    PG--&gt;&gt;BS: 2. Gửi Webhook thông báo thanh toán (kèm Payload &amp; HMAC Signature)\n    \n    rect rgb(235, 245, 255)\n        note over BS: BỔ SUNG 1: Kiểm tra &amp; Xác thực Bảo mật\n        BS-&gt;&gt;BS: 3. Xác thực chữ ký số HMAC-SHA256 (kiểm tra Signature &amp; API Key)\n        alt Chữ ký số không hợp lệ\n            BS--&gt;&gt;PG: 3a. Phản hồi 400 Bad Request (Từ chối xử lý)\n            BS-&gt;&gt;Audit: 3b. Ghi Log cảnh báo vi phạm bảo mật\n        else Chữ ký số hợp lệ (HMAC Valid)\n            BS-&gt;&gt;DB: 4. Gạch nợ giao dịch (ACID) &amp; Cập nhật trạng thái &#39;PAID&#39;\n            \n            rect rgb(240, 255, 240)\n                note over BS, OS: BỔ SUNG 2: Cập nhật hệ thống Vận đơn\n                BS-&gt;&gt;OS: 5. Cập nhật trạng thái vận đơn (Shipment) -&gt; &#39;PAID&#39;\n                OS--&gt;&gt;BS: 5a. Xác nhận cập nhật vận đơn thành công\n            end\n            \n            BS-&gt;&gt;Audit: 6. Ghi nhật ký vết giao dịch tài chính (Audit Trail)\n            BS--&gt;&gt;PG: 7. Phản hồi 200 OK (Xác nhận đã nhận Webhook thành công)\n        end\n    end&quot;,&#xa;  &quot;config&quot;: null&#xa;}" id="XXXn5iLI7XIm12TsK3cO-1">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=10;" vertex="1">
+            <mxGeometry as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-2" parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;rounded=0;strokeColor=none;fillColor=#ebf5ff;fillOpacity=100;pointerEvents=0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="733" width="1627" x="319" y="183" as="geometry" />
+        </mxCell>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-3" parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;rounded=0;strokeColor=none;fillColor=#f0fff0;fillOpacity=100;pointerEvents=0;fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="158" width="683" x="973" y="630" as="geometry" />
+        </mxCell>
+        <UserObject label="Khách hàng / Client" mermaidId="n:Client" mermaidBaseStyle="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);participant=seqActorStick;verticalAlign=bottom;align=center;spacingBottom=4;size=90;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Khách hàng / Client" id="XXXn5iLI7XIm12TsK3cO-4">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);participant=seqActorStick;verticalAlign=bottom;align=center;spacingBottom=4;size=90;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="976" width="150" x="30" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Payment Gateway (Cổng thanh toán)" mermaidId="n:PG" mermaidBaseStyle="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Payment Gateway (Cổng thanh toán)" id="XXXn5iLI7XIm12TsK3cO-5">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="951" width="150" x="344" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Billing Service (RikkeiLogistics)" mermaidId="n:BS" mermaidBaseStyle="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Billing Service (RikkeiLogistics)" id="XXXn5iLI7XIm12TsK3cO-6">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="951" width="150" x="908" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="PaymentTransaction DB" mermaidId="n:DB" mermaidBaseStyle="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="PaymentTransaction DB" id="XXXn5iLI7XIm12TsK3cO-7">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="951" width="150" x="1361" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Order Service (Hệ thống Vận đơn)" mermaidId="n:OS" mermaidBaseStyle="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Order Service (Hệ thống Vận đơn)" id="XXXn5iLI7XIm12TsK3cO-8">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="951" width="150" x="1571" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="AuditLog DB" mermaidId="n:Audit" mermaidBaseStyle="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="AuditLog DB" id="XXXn5iLI7XIm12TsK3cO-9">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};lifelineDashed=0;strokeWidth=2;rounded=1;absoluteArcSize=1;arcSize=6;lifelineColor=light-dark(#9370DB,#cccccc);size=65;lifelineMirror=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="951" width="150" x="1771" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="alt" mermaidId="n:f1" mermaidBaseStyle="html=1;shape=umlFrame;dashed=1;fixDash=1;dashPattern=2 2;strokeWidth=2;pointerEvents=0;dropTarget=0;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontSize=16;align=center;verticalAlign=middle;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);height=20;width=50;" mermaidBaseValue="alt" id="XXXn5iLI7XIm12TsK3cO-10">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;shape=umlFrame;dashed=1;fixDash=1;dashPattern=2 2;strokeWidth=2;pointerEvents=0;dropTarget=0;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontSize=16;align=center;verticalAlign=middle;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);height=20;width=50;" vertex="1">
+            <mxGeometry height="495" width="1467" x="399" y="401" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-11" parent="XXXn5iLI7XIm12TsK3cO-10" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);" value="[Chữ ký số không hợp lệ]" vertex="1">
+          <mxGeometry height="16" width="1413" x="54" y="2" as="geometry" />
+        </mxCell>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-12" parent="XXXn5iLI7XIm12TsK3cO-10" style="shape=line;dashed=1;fixDash=1;dashPattern=2 2;strokeColor=light-dark(#9370DB,#cccccc);" vertex="1">
+          <mxGeometry height="1" width="1467" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-13" parent="XXXn5iLI7XIm12TsK3cO-10" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);" value="[Chữ ký số hợp lệ (HMAC Valid)]" vertex="1">
+          <mxGeometry height="16" width="1467" y="177" as="geometry" />
+        </mxCell>
+        <UserObject label="1. Thực hiện thanh toán cước / COD" mermaidId="e:Client-&gt;PG#0" mermaidBaseStyle="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="1. Thực hiện thanh toán cước / COD" id="XXXn5iLI7XIm12TsK3cO-14">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-4" style="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="262" y="139" />
+              </Array>
+              <mxPoint x="105" y="139" as="sourcePoint" />
+              <mxPoint x="419" y="139" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-15" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="1" vertex="1">
+          <mxGeometry height="20" width="20" x="95" y="129" as="geometry" />
+        </mxCell>
+        <UserObject label="2. Gửi Webhook thông báo thanh toán (kèm Payload &amp; HMAC Signature)" mermaidId="e:PG-&gt;BS#0" mermaidBaseStyle="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="2. Gửi Webhook thông báo thanh toán (kèm Payload &amp; HMAC Signature)" id="XXXn5iLI7XIm12TsK3cO-16">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-5" style="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-6">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="701" y="183" />
+              </Array>
+              <mxPoint x="419" y="183" as="sourcePoint" />
+              <mxPoint x="983" y="183" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-17" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="2" vertex="1">
+          <mxGeometry height="20" width="20" x="409" y="173" as="geometry" />
+        </mxCell>
+        <UserObject label="" mermaidId="e:BS-&gt;BS#0" mermaidBaseStyle="edgeStyle=none;curved=1;endArrow=block;endSize=9;verticalAlign=bottom;align=center;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="" id="XXXn5iLI7XIm12TsK3cO-18">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-6" style="edgeStyle=none;curved=1;endArrow=block;endSize=9;verticalAlign=bottom;align=center;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;rounded=0;" target="XXXn5iLI7XIm12TsK3cO-6">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1018" y="351" />
+                <mxPoint x="1022" y="363" />
+                <mxPoint x="1018" y="375" />
+              </Array>
+              <mxPoint x="983" y="351" as="sourcePoint" />
+              <mxPoint x="983" y="375" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-19" parent="XXXn5iLI7XIm12TsK3cO-1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;fontColor=light-dark(#333333,#cccccc);" value="3. Xác thực chữ ký số HMAC-SHA256 (kiểm tra Signature &amp; API Key)" vertex="1">
+          <mxGeometry height="18" width="200" x="883" y="327" as="geometry" />
+        </mxCell>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-20" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="3" vertex="1">
+          <mxGeometry height="20" width="20" x="973" y="341" as="geometry" />
+        </mxCell>
+        <UserObject label="3a. Phản hồi 400 Bad Request (Từ chối xử lý)" mermaidId="e:BS-&gt;PG#0" mermaidBaseStyle="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="3a. Phản hồi 400 Bad Request (Từ chối xử lý)" id="XXXn5iLI7XIm12TsK3cO-21">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-6" style="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="701" y="476" />
+              </Array>
+              <mxPoint x="983" y="476" as="sourcePoint" />
+              <mxPoint x="419" y="476" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-22" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="4" vertex="1">
+          <mxGeometry height="20" width="20" x="973" y="466" as="geometry" />
+        </mxCell>
+        <UserObject label="3b. Ghi Log cảnh báo vi phạm bảo mật" mermaidId="e:BS-&gt;Audit#0" mermaidBaseStyle="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="3b. Ghi Log cảnh báo vi phạm bảo mật" id="XXXn5iLI7XIm12TsK3cO-23">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-6" style="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-9">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1415" y="530" />
+              </Array>
+              <mxPoint x="983" y="530" as="sourcePoint" />
+              <mxPoint x="1846" y="530" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-24" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="5" vertex="1">
+          <mxGeometry height="20" width="20" x="973" y="520" as="geometry" />
+        </mxCell>
+        <UserObject label="4. Gạch nợ giao dịch (ACID) &amp; Cập nhật trạng thái &#39;PAID&#39;" mermaidId="e:BS-&gt;DB#0" mermaidBaseStyle="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="4. Gạch nợ giao dịch (ACID) &amp; Cập nhật trạng thái &#39;PAID&#39;" id="XXXn5iLI7XIm12TsK3cO-25">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-6" style="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-7">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1210" y="620" />
+              </Array>
+              <mxPoint x="983" y="620" as="sourcePoint" />
+              <mxPoint x="1436" y="620" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-26" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="6" vertex="1">
+          <mxGeometry height="20" width="20" x="973" y="610" as="geometry" />
+        </mxCell>
+        <UserObject label="5. Cập nhật trạng thái vận đơn (Shipment) -&gt; &#39;PAID&#39;" mermaidId="e:BS-&gt;OS#0" mermaidBaseStyle="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="5. Cập nhật trạng thái vận đơn (Shipment) -&gt; &#39;PAID&#39;" id="XXXn5iLI7XIm12TsK3cO-27">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-6" style="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-8">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1315" y="724" />
+              </Array>
+              <mxPoint x="983" y="724" as="sourcePoint" />
+              <mxPoint x="1646" y="724" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-28" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="7" vertex="1">
+          <mxGeometry height="20" width="20" x="973" y="714" as="geometry" />
+        </mxCell>
+        <UserObject label="5a. Xác nhận cập nhật vận đơn thành công" mermaidId="e:OS-&gt;BS#0" mermaidBaseStyle="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="5a. Xác nhận cập nhật vận đơn thành công" id="XXXn5iLI7XIm12TsK3cO-29">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-8" style="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-6">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1315" y="778" />
+              </Array>
+              <mxPoint x="1646" y="778" as="sourcePoint" />
+              <mxPoint x="983" y="778" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-30" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="8" vertex="1">
+          <mxGeometry height="20" width="20" x="1636" y="768" as="geometry" />
+        </mxCell>
+        <UserObject label="6. Ghi nhật ký vết giao dịch tài chính (Audit Trail)" mermaidId="e:BS-&gt;Audit#1" mermaidBaseStyle="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="6. Ghi nhật ký vết giao dịch tài chính (Audit Trail)" id="XXXn5iLI7XIm12TsK3cO-31">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-6" style="endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-9">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1415" y="832" />
+              </Array>
+              <mxPoint x="983" y="832" as="sourcePoint" />
+              <mxPoint x="1846" y="832" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-32" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="9" vertex="1">
+          <mxGeometry height="20" width="20" x="973" y="822" as="geometry" />
+        </mxCell>
+        <UserObject label="7. Phản hồi 200 OK (Xác nhận đã nhận Webhook thành công)" mermaidId="e:BS-&gt;PG#1" mermaidBaseStyle="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" mermaidBaseValue="7. Phản hồi 200 OK (Xác nhận đã nhận Webhook thành công)" id="XXXn5iLI7XIm12TsK3cO-33">
+          <mxCell edge="1" parent="XXXn5iLI7XIm12TsK3cO-1" source="XXXn5iLI7XIm12TsK3cO-6" style="dashed=1;fixDash=1;dashPattern=3 3;endArrow=block;endSize=9;verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;fontSize=16;labelBackgroundColor=none;strokeWidth=1.5;strokeColor=light-dark(#333333,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;" target="XXXn5iLI7XIm12TsK3cO-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="701" y="886" />
+              </Array>
+              <mxPoint x="983" y="886" as="sourcePoint" />
+              <mxPoint x="419" y="886" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="XXXn5iLI7XIm12TsK3cO-34" parent="XXXn5iLI7XIm12TsK3cO-1" style="ellipse;aspect=fixed;fillColor=light-dark(#333333,#cccccc);align=center;verticalAlign=middle;fontColor=light-dark(#FFFFFF,#333333);fontSize=12;" value="10" vertex="1">
+          <mxGeometry height="20" width="20" x="973" y="876" as="geometry" />
+        </mxCell>
+        <UserObject label="BỔ SUNG 1: Kiểm tra &amp; Xác thực Bảo mật" mermaidId="n:note0" mermaidBaseStyle="html=1;fillColor=light-dark(#fff5ad,#2a2a2a);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="BỔ SUNG 1: Kiểm tra &amp; Xác thực Bảo mật" id="XXXn5iLI7XIm12TsK3cO-35">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;fillColor=light-dark(#fff5ad,#2a2a2a);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="40" width="294" x="836" y="193" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="BỔ SUNG 2: Cập nhật hệ thống Vận đơn" mermaidId="n:note1" mermaidBaseStyle="html=1;fillColor=light-dark(#fff5ad,#2a2a2a);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="BỔ SUNG 2: Cập nhật hệ thống Vận đơn" id="XXXn5iLI7XIm12TsK3cO-36">
+          <mxCell parent="XXXn5iLI7XIm12TsK3cO-1" style="html=1;fillColor=light-dark(#fff5ad,#2a2a2a);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="40" width="703" x="963" y="640" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dc42nxkcJYc-ZlhznOej" name="Page-2">
+    <mxGraphModel dx="673" dy="392" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="khách hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="80" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-2" edge="1" parent="1" source="qbWG81b8eRdjm73PukGT-1" style="endArrow=none;dashed=1;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="90" y="500.8000183105469" as="sourcePoint" />
+            <mxPoint x="90" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-3" parent="1" style="html=1;whiteSpace=wrap;" value="cổng thanh toán" vertex="1">
+          <mxGeometry height="50" width="110" x="264" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-4" parent="1" style="html=1;whiteSpace=wrap;" value="ngân hàng lõi" vertex="1">
+          <mxGeometry height="50" width="110" x="490" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-5" parent="1" style="html=1;whiteSpace=wrap;" value="EmailServer" vertex="1">
+          <mxGeometry height="50" width="110" x="700" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-6" edge="1" parent="1" source="6GG1CJO-nUgO69f3hBBA-12" style="endArrow=none;dashed=1;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="6GG1CJO-nUgO69f3hBBA-3" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="320" y="500" as="sourcePoint" />
+            <mxPoint x="220" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-7" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="6GG1CJO-nUgO69f3hBBA-4" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="550" y="500" as="sourcePoint" />
+            <mxPoint x="560" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-8" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="6GG1CJO-nUgO69f3hBBA-5" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="755" y="500" as="sourcePoint" />
+            <mxPoint x="750" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-9" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="90" y="230" as="sourcePoint" />
+            <mxPoint x="320" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="nhập thông tin thẻ" vertex="1">
+          <mxGeometry height="30" width="60" x="170" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-11" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="6GG1CJO-nUgO69f3hBBA-12" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="320" y="500" as="sourcePoint" />
+            <mxPoint x="319" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-12" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="230" width="10" x="314" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-13" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="319" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-14" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" target="6GG1CJO-nUgO69f3hBBA-13" value="checkCardFormat()">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="354" y="280" />
+            </Array>
+            <mxPoint x="324" y="250" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-15" edge="1" parent="1" source="6GG1CJO-nUgO69f3hBBA-12" style="endArrow=classic;html=1;rounded=0;exitX=0.6;exitY=0.478;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="350" y="400" as="sourcePoint" />
+            <mxPoint x="550" y="339.94000000000005" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="processPayment()" vertex="1">
+          <mxGeometry height="30" width="60" x="390" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-17" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="6GG1CJO-nUgO69f3hBBA-12" value="Kết quả giao dịch">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="400" as="sourcePoint" />
+            <mxPoint x="390" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-18" edge="1" parent="1" source="6GG1CJO-nUgO69f3hBBA-12" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=-5;exitPerimeter=0;" value="hiển thị thành công">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="460" as="sourcePoint" />
+            <mxPoint x="90" y="455" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-19" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="320" y="490" as="sourcePoint" />
+            <mxPoint x="760" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6GG1CJO-nUgO69f3hBBA-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="sendReceiptEmail()&amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="60" x="500" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="qbWG81b8eRdjm73PukGT-2" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;" target="qbWG81b8eRdjm73PukGT-1" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="90" y="500.8000183105469" as="sourcePoint" />
+            <mxPoint x="90" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qbWG81b8eRdjm73PukGT-1" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="270" width="10" x="80" y="200" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="FgB1Wpf3FXMFCMCIJRhG" name="Page-3">
+    <mxGraphModel dx="1414" dy="823" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="khách hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="70" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-2" parent="1" style="html=1;whiteSpace=wrap;" value="App Điều Phối" vertex="1">
+          <mxGeometry height="50" width="110" x="254" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-3" parent="1" style="html=1;whiteSpace=wrap;" value="Trip" vertex="1">
+          <mxGeometry height="50" width="110" x="640" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-4" parent="1" style="html=1;whiteSpace=wrap;" value=" Điện thoại Tài xế   " vertex="1">
+          <mxGeometry height="50" width="110" x="460" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-5" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="80" y="530" as="sourcePoint" />
+            <mxPoint x="80" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-6" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;verticalAlign=bottom;endSize=8;curved=0;" target="LDpn4Z3F4YGNkqZJmQf3-2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="309" y="530" as="sourcePoint" />
+            <mxPoint x="380" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-7" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="LDpn4Z3F4YGNkqZJmQf3-4" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="515" y="450" as="sourcePoint" />
+            <mxPoint x="480" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-8" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="LDpn4Z3F4YGNkqZJmQf3-3" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="695" y="450" as="sourcePoint" />
+            <mxPoint x="660" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-9" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="80" y="170" as="sourcePoint" />
+            <mxPoint x="310" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="taoDonHang()" vertex="1">
+          <mxGeometry height="30" width="60" x="160" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-11" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="310" y="210" as="sourcePoint" />
+            <mxPoint x="520" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Yêu cầu nhận đơn" vertex="1">
+          <mxGeometry height="30" width="60" x="390" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-13" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Đồng ý / Từ chối">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="270" as="sourcePoint" />
+            <mxPoint x="310" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-14" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" value="[Tài xế đồng ý]&amp;nbsp;" vertex="1">
+          <mxGeometry height="90" width="300" x="360" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-15" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" value="[Tài xế từ chối]&amp;nbsp; &amp;nbsp;&amp;nbsp;" vertex="1">
+          <mxGeometry height="90" width="300" x="360" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-16" edge="1" parent="1" source="LDpn4Z3F4YGNkqZJmQf3-14" style="endArrow=classic;html=1;rounded=0;exitX=0.003;exitY=0.56;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.989;entryY=0.587;entryDx=0;entryDy=0;entryPerimeter=0;" target="LDpn4Z3F4YGNkqZJmQf3-14" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="340" y="540" as="sourcePoint" />
+            <mxPoint x="390" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Không tạo Trip&amp;nbsp; &amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="60" x="410" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="LDpn4Z3F4YGNkqZJmQf3-18" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="kết quả cuối cùng">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="310" y="500" as="sourcePoint" />
+            <mxPoint x="80" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
